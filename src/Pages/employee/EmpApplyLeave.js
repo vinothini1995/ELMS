@@ -19,6 +19,8 @@ const EmpApplyLeave = () => {
     description: "",
     name: "", // <-- get it from context
     emp_code:"",
+    id:"",
+    
   });
   useEffect(() => {
     if (profile?.name) {
@@ -33,6 +35,22 @@ const EmpApplyLeave = () => {
   const[error,setError]=useState({});
   const[successMessage,setSuccessMessage]=useState("");
   const[isSubmitting,setIsSubmitting]=useState(false);
+  const [leaveTypes, setLeaveTypes] = useState([]);
+  useEffect(()=>{
+    const fetchLeaveTypes=async()=>{
+      try{
+    const response=await axios.get("http://localhost:5000/api/leave/leavetypes");
+    console.log("Fetched Leave Types:", response.data); // 👈 Add this
+
+    setLeaveTypes(response.data);
+     }
+      catch(err){
+    console.error("Error fetching Leavetypes",err);
+    }
+    }
+    
+      fetchLeaveTypes();
+    },[]);
   const validateForm = () => {
     const errors = {};
     const today = new Date();
@@ -149,21 +167,23 @@ const EmpApplyLeave = () => {
 
                 {/* Leave Type Dropdown */}
                 <Grid item xs={12}>
-                  <TextField
-                    select
-                    fullWidth
-                    label="Leave Type"
-                    name="leaveType"
-                    value={leave.leaveType}
-                    onChange={handleChange}
-                    required
-                  >
-                    <MenuItem value="Sick Leave">Sick Leave</MenuItem>
-                    <MenuItem value="Casual Leave">Casual Leave</MenuItem>
-                    <MenuItem value="Annual Leave">Annual Leave</MenuItem>
-                    <MenuItem value="Maternity Leave">Maternity Leave</MenuItem>
-                    <MenuItem value="Paternity Leave">Paternity Leave</MenuItem>
-                  </TextField>
+                <TextField
+  select
+  fullWidth
+  label="Leave Type"
+  name="leaveType"
+  value={leave.leaveType}
+  onChange={handleChange}
+  required
+>
+  {leaveTypes.map((type, index) => (
+    <MenuItem key={type.id || index} value={type.leaveType}>
+      {type.leaveType}
+    </MenuItem>
+  ))}
+</TextField>
+
+
                 </Grid>
 
                 {/* Description */}

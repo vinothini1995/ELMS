@@ -10,26 +10,7 @@ const EmployeeProfile = () => {
   // State for form fields
   const { profile, setProfile, fetchProfile } = useContext(EmployeeContext);
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     const decoded = jwtDecode(token);
-  //     const empId = decoded.id;
-  
-  //     axios.get(`http://localhost:5000/api/emp/employee/${empId}`)
-  //       .then(res => {
-  //         const data = res.data;
-  //         // Format date if it exists
-  //         if (data.birthDate) {
-  //           const date = new Date(data.birthDate);
-  //           const formattedDate = date.toISOString().split("T")[0]; // YYYY-MM-DD
-  //           data.birthDate = formattedDate;
-  //         }
-  //         setProfile(data);
-  //       })
-  //       .catch(err => console.error("Failed to fetch profile", err));
-  //   }
-  // }, []);
+
   // Handle form input change
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
@@ -57,13 +38,13 @@ const EmployeeProfile = () => {
   return (
     <>
       <EmployeeLayout />
-      <Container maxWidth="md">
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4 }}>
+      <Container maxWidth="md" sx={{ mt: 6, ml: { md: '250px', xs: '0' } }}>
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4 }}>
           <Typography variant="h5" sx={{ fontWeight: "bold", mb: 3, textAlign: "center" }}>
             Update Your Profile
           </Typography>
 
-          <Paper sx={{ p: 4, width: "100%", maxWidth: 700 }}>
+          <Paper sx={{ p: 4, width: "100%" }}>
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
                 {/* Employee Code (Read-only) */}
@@ -74,6 +55,8 @@ const EmployeeProfile = () => {
                     name="emp_code"
                     value={profile.emp_code}
                     InputProps={{ readOnly: true }}
+                    sx={{ mb: 2 }}
+
                   />
                 </Grid>
 
@@ -86,6 +69,8 @@ const EmployeeProfile = () => {
                     value={profile.name}
                     onChange={handleChange}
                     required
+                    sx={{ mb: 2 }}
+
                   />
                 </Grid>
             
@@ -100,6 +85,8 @@ const EmployeeProfile = () => {
                     value={profile.gender}
                     onChange={handleChange}
                     required
+                    sx={{ mb: 2 }}
+
                   >
                     <MenuItem value="Male">Male</MenuItem>
                     <MenuItem value="Female">Female</MenuItem>
@@ -118,6 +105,8 @@ const EmployeeProfile = () => {
                     onChange={handleChange}
                     InputLabelProps={{ shrink: true }}
                     required
+                    sx={{ mb: 2 }}
+
                   />
                 </Grid>
 
@@ -131,6 +120,8 @@ const EmployeeProfile = () => {
                     value={profile.email}
                     onChange={handleChange}
                     required
+                    sx={{ mb: 2 }}
+
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -142,6 +133,8 @@ const EmployeeProfile = () => {
                     value={profile.contact}
                     onChange={handleChange}
                     required
+                    sx={{ mb: 2 }}
+
                   />
                 </Grid>
 
@@ -154,6 +147,8 @@ const EmployeeProfile = () => {
                     value={profile.city}
                     onChange={handleChange}
                     required
+                    sx={{ mb: 2 }}
+
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -164,6 +159,8 @@ const EmployeeProfile = () => {
                     value={profile.country}
                     onChange={handleChange}
                     required
+                    sx={{ mb: 2 }}
+
                   />
                 </Grid>
 
@@ -178,6 +175,8 @@ const EmployeeProfile = () => {
                     multiline
                     rows={3}
                     required
+                    sx={{ mb: 2 }}
+
                   />
                 </Grid>
 

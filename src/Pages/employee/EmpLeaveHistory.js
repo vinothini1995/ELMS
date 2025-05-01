@@ -52,8 +52,8 @@ const[leave,setLeave]=useState([])
         return <Chip label="Approved" color="success" />;
       case "Pending":
         return <Chip label="Pending" color="warning" />;
-      case "Rejected":
-        return <Chip label="Rejected" color="error" />;
+      case "Not Approved":
+        return <Chip label="Not Approved" color="error" />;
       default:
         return <Chip label="Unknown" />;
     }
@@ -76,16 +76,16 @@ const[leave,setLeave]=useState([])
   return (
     <>
       <EmployeeLayout />
-        <Box sx={{ mt: 4, textAlign: "center" }}>
+            <Container maxWidth="md" sx={{ mt: 6, ml: { md: '250px', xs: '0' } }}>
+      
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4 }}>
           <Typography variant="h5" sx={{ fontWeight: "bold", mb: 3 }}>
             Leave History
           </Typography>
-        </Box>
 
-        <Container maxWidth="xl"  sx={{ px: 1,ml:'240px',overflowX:"hidden",maxWidth:'1000px'}}>
 
         {/* <Box sx={{ overflowX: "auto" }}> */}
-        <TableContainer component={Paper} sx={{ overflowX: 'hidden' }}>
+        <TableContainer component={Paper} >
         <Table  >     
              <TableHead>
           <TableRow>
@@ -116,6 +116,8 @@ const[leave,setLeave]=useState([])
           </Table>
         </TableContainer>
         {/* </Box> */}
+        </Box>
+
         </Container>
 
     </>

@@ -93,8 +93,18 @@ const ManageEmployees = () => {
   return (
     <>
       <Layout />
-      <Box sx={{ flexGrow: 1, p: 3, ml: "250px" }}>
-        <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "#3f51b5" }}>
+      <Box  sx={{
+          flexGrow: 1,
+          px: 2,
+          py: 3,
+          ml: { sm: "250px" }, // Sidebar space only on larger screens
+        }}>
+        <Typography variant="h5"   sx={{
+            mb: 2,
+            fontWeight: "bold",
+            color: "#3f51b5",
+            textAlign: { xs: "center", sm: "left" },
+          }}>
           Manage Employees
         </Typography>
 

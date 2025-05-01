@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Paper, IconButton, Typography, Box, Dialog, DialogTitle, DialogContent,
-  DialogActions, Button, TextField
+  DialogActions, Button, TextField, useMediaQuery
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Layout from "./Layout";
@@ -15,12 +16,14 @@ const ManageDepartment = () => {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  
-  // Fetch departments
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/dept/departments"); // Create this GET endpoint
+        const response = await axios.get("http://localhost:5000/api/dept/departments");
         setDepartments(response.data);
       } catch (err) {
         console.error("Error fetching departments", err);
@@ -30,11 +33,11 @@ const ManageDepartment = () => {
     fetchDepartments();
   }, []);
 
- 
   const handleDeleteClick = (id) => {
     setDeleteId(id);
     setOpenDeleteDialog(true);
   };
+
   const confirmDelete = async () => {
     try {
       await axios.delete(`http://localhost:5000/api/dept/department/${deleteId}`);
@@ -45,16 +48,17 @@ const ManageDepartment = () => {
       console.error("Delete failed:", err);
     }
   };
-    
- 
+
   const handleCancelDelete = () => {
     setOpenDeleteDialog(false);
     setDeleteId(null);
   };
+
   const handleEditOpen = (dept) => {
-    setEditDept({ ...dept }); // clone object
+    setEditDept({ ...dept });
     setOpenEditModal(true);
   };
+
   const handleEditClose = () => {
     setOpenEditModal(false);
     setEditDept(null);
@@ -79,13 +83,34 @@ const ManageDepartment = () => {
   return (
     <>
       <Layout />
-      <Box sx={{ flexGrow: 1, p: 3, ml: "250px" }}>
-        <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "#3f51b5" }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          px: 2,
+          py: 3,
+          ml: { sm: "250px" }, // Sidebar space only on larger screens
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{
+            mb: 2,
+            fontWeight: "bold",
+            color: "#3f51b5",
+            textAlign: { xs: "center", sm: "left" },
+          }}
+        >
           Manage Departments
         </Typography>
 
-        <TableContainer component={Paper}>
-          <Table>
+        <TableContainer
+          component={Paper}
+          sx={{
+            overflowX: "auto", // allows horizontal scroll on small screens
+            maxWidth: "100%",
+          }}
+        >
+          <Table size="small">
             <TableHead sx={{ bgcolor: "#f5f5f5" }}>
               <TableRow>
                 <TableCell sx={{ fontWeight: "bold" }}>S.No</TableCell>
@@ -106,7 +131,7 @@ const ManageDepartment = () => {
                     <IconButton onClick={() => handleEditOpen(dept)} color="primary">
                       <EditIcon />
                     </IconButton>
-                    <IconButton onClick={() => handleDeleteClick(dept.id)}color="error">
+                    <IconButton onClick={() => handleDeleteClick(dept.id)} color="error">
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
@@ -117,25 +142,22 @@ const ManageDepartment = () => {
         </TableContainer>
       </Box>
 
-      
-      <Dialog
-  open={openDeleteDialog}
-  onClose={handleCancelDelete}
->
-  <DialogTitle>Confirm Deletion</DialogTitle>
-  <DialogContent>
-    <Typography>Are you sure you want to delete this department?</Typography>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleCancelDelete}>Cancel</Button>
-    <Button onClick={confirmDelete} color="error" variant="contained">
-      Delete
-    </Button>
-  </DialogActions>
-</Dialog>
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={openDeleteDialog} onClose={handleCancelDelete}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this department?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete}>Cancel</Button>
+          <Button onClick={confirmDelete} color="error" variant="contained">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-      {/* ✨ Edit Modal */}
-      <Dialog open={openEditModal} onClose={handleEditClose}>
+      {/* Edit Department Modal */}
+      <Dialog open={openEditModal} onClose={handleEditClose} fullWidth maxWidth="sm">
         <DialogTitle>Edit Department</DialogTitle>
         <DialogContent>
           <TextField
@@ -165,7 +187,9 @@ const ManageDepartment = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleEditClose}>Cancel</Button>
-          <Button onClick={handleUpdate} variant="contained" color="primary">Update</Button>
+          <Button onClick={handleUpdate} variant="contained" color="primary">
+            Update
+          </Button>
         </DialogActions>
       </Dialog>
     </>

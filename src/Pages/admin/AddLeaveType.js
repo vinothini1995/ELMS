@@ -1,32 +1,37 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography, Paper } from "@mui/material";
+import { Box, TextField, Button, Typography, Paper, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import Layout from "./Layout";
-import axios from "axios"; // ⬅️ Import axios
+import axios from "axios";
 
 const AddLeaveType = () => {
   const [leaveType, setLeaveType] = useState({
-      leaveType:"",
-      description:"",
-      createdDate:"",
+    leaveType: "",
+    description: "",
+    createdDate: "",
   });
-   const [error, setError] = useState({});
-    const [successMessage, setSuccessMessage] = useState("");
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const validateForm = () => {
     const newErrors = {};
-    if (!leaveType.leaveType.trim()) newErrors.leaveType = "LeaveType  is required";
+    if (!leaveType.leaveType.trim()) newErrors.leaveType = "Leave Type is required";
     if (!leaveType.description.trim()) newErrors.description = "Description is required";
-    // if (!department.shortName.trim()) newErrors.shortName = "Short Name is required";
     setError(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const handleChange = (e) => {
     setLeaveType({ ...leaveType, [e.target.name]: e.target.value });
-    setError({ ...error, [e.target.name]: "" }); // Clear field error on change
+    setError({ ...error, [e.target.name]: "" });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     try {
@@ -37,13 +42,15 @@ const AddLeaveType = () => {
         headers: { "Content-Type": "application/json" },
       });
 
-      setSuccessMessage(response.data.message || "LeaveType added successfully");
+      setSuccessMessage(response.data.message || "Leave Type added successfully");
       setTimeout(() => {
         setSuccessMessage("");
       }, 2000);
-      setLeaveType({ leaveType:"",
-        description:"",
-        createdDate:"",}); // Clear form
+      setLeaveType({
+        leaveType: "",
+        description: "",
+        createdDate: "",
+      });
       setError({});
     } catch (error) {
       if (error.response) {
@@ -55,67 +62,98 @@ const AddLeaveType = () => {
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <>
       <Layout />
-      <Box sx={{ flexGrow: 1, p: 3, ml: "250px" }}>
-        <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "#3f51b5" }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          px: 2,
+          py: 3,
+          ml: { sm: "250px", xs: 0 },
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{
+            mb: 2,
+            fontWeight: "bold",
+            color: "#3f51b5",
+            textAlign: { xs: "center", sm: "left" },
+          }}
+        >
           Add Leave Type
         </Typography>
 
-
-{successMessage && (
-          <Typography color="success.main" sx={{ mt: 1 }}>
+        {successMessage && (
+          <Typography color="success.main" sx={{ mt: 1, textAlign: "center" }}>
             {successMessage}
           </Typography>
         )}
         {error.server && (
-          <Typography color="error.main" sx={{ mt: 1 }}>
+          <Typography color="error.main" sx={{ mt: 1, textAlign: "center" }}>
             {error.server}
           </Typography>
         )}
 
-        <Paper elevation={3} sx={{ p: 3, maxWidth: 500, mx: "auto" }}>
-          <form onSubmit={handleSubmit}>
-            {/* Leave Type Input */}
-            <TextField
-              label="Leave Type"
-              variant="outlined"
-              fullWidth
-              name="leaveType" // <-- Add this
-              required
-              value={leaveType.leaveType}
-              onChange={handleChange}
-              error={!!error.leaveType}
-              helperText={error.leaveType}
-              sx={{ mb: 2 }}
-            />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 3,
+          }}
+        >
+          <Paper
+            elevation={3}
+            sx={{
+              p: 3,
+              width: "100%",
+              maxWidth: { xs: "100%", sm: 500 },
+              mx: "auto",
+            }}
+          >
+            <form onSubmit={handleSubmit}>
+              <TextField
+                label="Leave Type"
+                variant="outlined"
+                fullWidth
+                name="leaveType"
+                required
+                value={leaveType.leaveType}
+                onChange={handleChange}
+                error={!!error.leaveType}
+                helperText={error.leaveType}
+                sx={{ mb: 2 }}
+              />
 
-            {/* Description Input */}
-            <TextField
-              label="Description"
-              variant="outlined"
-              fullWidth
-              name="description" // <-- Add this
+              <TextField
+                label="Description"
+                variant="outlined"
+                fullWidth
+                name="description"
+                required
+                multiline
+                rows={3}
+                value={leaveType.description}
+                onChange={handleChange}
+                error={!!error.description}
+                helperText={error.description}
+                sx={{ mb: 2 }}
+              />
 
-              required
-              multiline
-              rows={3}
-              error={!!error.description}
-              helperText={error.description}
-             value={ leaveType.description}
-              onChange={handleChange}
-              sx={{ mb: 2 }}
-            />
-
-            {/* Submit Button */}
-            <Button type="submit" variant="contained"               disabled={isSubmitting}
- color="primary" fullWidth>
-              {isSubmitting ? "Submitting..." : "Add leaveType"}
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Add Leave Type"}
               </Button>
-          </form>
-        </Paper>
+            </form>
+          </Paper>
+        </Box>
       </Box>
     </>
   );

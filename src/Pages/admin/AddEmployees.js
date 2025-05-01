@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React, { useState,useEffect } from "react";
 import { TextField, Button, Box, Typography, MenuItem, Select, FormControl, InputLabel, Paper, Grid, Container } from "@mui/material";
 import Layout from "./Layout";
 import axios from "axios";
@@ -21,7 +20,7 @@ const AddEmployees = () => {
 const[error,setError]=useState({});
 const[successMessage,setSuccessMessage]=useState("");
 const[isSubmitting,setIsSubmitting]=useState(false);
-  const departments = ["IT", "HR", "Finance", "Marketing", "Operations"];
+const [departments, setDepartments] = useState([]);
   const genders = ["Male", "Female", "Other"];
 const validateForm=()=>{
   const newErrors = {};
@@ -84,12 +83,37 @@ return Object.keys(newErrors).length === 0;
       setIsSubmitting(false);
     }
   };
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/dept/departments"); // your API endpoint for departments
+        setDepartments(response.data); // assuming response.data is an array of department names or objects
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+      }
+    };
+  
+    fetchDepartments();
+  }, []);
 return (
     <>
       <Layout />
-      <Container maxWidth="md">
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 ,ml:10}}>
-          <Paper sx={{ p: 4, width: "100%" }}>
+      <Container>
+  <Box  sx={{
+          flexGrow: 1,
+          px: 2,
+          py: 3,
+          ml: { sm: "250px", xs: 0 },
+        }}>
+    <Paper     sx={{
+            p: 3,
+            maxWidth: 500,
+            mx: "auto",
+            mt: 3,
+            boxShadow: 3,
+            width: "100%", // Full width for smaller devices
+          }}>
+
             <Typography variant="h5" sx={{ mb: 3, textAlign: "center", fontWeight: "bold", color: "#3f51b5" }}>
               Add Employee
             </Typography>
@@ -133,17 +157,22 @@ return (
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth required>
-                    <InputLabel>Department</InputLabel>
-                    <Select name="department" value={employee.department}  error={!!error.department}
-              helperText={error.department} onChange={handleChange}>
-                      {departments.map((dept, index) => (
-                        <MenuItem key={index} value={dept}>
-                          {dept}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                <FormControl fullWidth required>
+  <InputLabel>Department</InputLabel>
+  <Select 
+    name="department" 
+    value={employee.department} 
+    error={!!error.department}
+    onChange={handleChange}
+  >
+    {departments.map((dept, index) => (
+      <MenuItem key={index} value={dept.name}>
+        {dept.name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
+
                 </Grid>
 
                 {/* Email */}

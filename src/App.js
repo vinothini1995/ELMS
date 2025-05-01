@@ -22,6 +22,9 @@ import ApprovedLeaves from './Pages/admin/ApprovedLeaves';
 import NotApproved from './Pages/admin/NotApproved';
 import PendingLeaveDetails from './Pages/admin/PendingLeaveDetails';
 import { EmployeeProvider } from './Pages/employee/EmployeeContext';
+import ApprovedLeaveDetails from './Pages/admin/ApprovedLeaveDetails';
+import NotApprovedDetails from './Pages/admin/NotApprovedDetails';
+import DashboardLeave from './Pages/admin/DashboardLeave';
 const App = () => {
   return (
     <div>
@@ -49,7 +52,10 @@ const App = () => {
           <Route path="/PendingLeaves" element={<PendingLeaves />} />
           <Route path ="/ApprovedLeaves" element={<ApprovedLeaves />} />
           <Route path="/NotApproved" element={<NotApproved />} />
-          <Route path="/PendingLeaveDetails" element={<PendingLeaveDetails />} />
+          <Route path="/PendingLeaveDetails/:id" element={<PendingLeaveDetails />} />
+          <Route path="/ApprovedLeaveDetails/:id" element={<ApprovedLeaveDetails />} />
+          <Route path="/NotApprovedDetails/:id" element={<NotApprovedDetails />}/>
+          <Route path="/DashboardLeave" element={<DashboardLeave/>} />
         </Routes>
         </EmployeeProvider>
 

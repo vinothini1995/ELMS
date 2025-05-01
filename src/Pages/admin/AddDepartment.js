@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { TextField, Button, Typography, Box, Paper } from "@mui/material";
+import { TextField, Button, Typography, Box, Paper, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import Layout from "./Layout";
 import axios from "axios";
 
@@ -14,6 +15,9 @@ const AddDepartment = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const validateForm = () => {
     const newErrors = {};
     if (!department.code.trim()) newErrors.code = "Department Code is required";
@@ -25,12 +29,11 @@ const AddDepartment = () => {
 
   const handleChange = (e) => {
     setDepartment({ ...department, [e.target.name]: e.target.value });
-    setError({ ...error, [e.target.name]: "" }); // Clear field error on change
+    setError({ ...error, [e.target.name]: "" });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     try {
@@ -42,10 +45,9 @@ const AddDepartment = () => {
       });
 
       setSuccessMessage(response.data.message || "Department added successfully");
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 1000);
-      setDepartment({ code: "", name: "", shortName: "" }); // Clear form
+      setTimeout(() => setSuccessMessage(""), 2000);
+
+      setDepartment({ code: "", name: "", shortName: "" });
       setError({});
     } catch (error) {
       if (error.response) {
@@ -61,23 +63,47 @@ const AddDepartment = () => {
   return (
     <>
       <Layout />
-      <Box sx={{ flexGrow: 1, p: 3, ml: "250px" }}>
-        <Typography variant="h5" sx={{ fontWeight: "bold", color: "#3f51b5" }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: isMobile ? 2 : 3,
+          ml: { sm: "250px" }, // only apply left margin when screen is small and above (because drawer width)
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: "bold",
+            color: "#3f51b5",
+            textAlign: { xs: "center", sm: "left" },
+            mb: 2,
+          }}
+        >
           Add Department
         </Typography>
 
         {successMessage && (
-          <Typography color="success.main" sx={{ mt: 1 }}>
+          <Typography color="success.main" sx={{ mt: 1, textAlign: "center" }}>
             {successMessage}
           </Typography>
         )}
+
         {error.server && (
-          <Typography color="error.main" sx={{ mt: 1 }}>
+          <Typography color="error.main" sx={{ mt: 1, textAlign: "center" }}>
             {error.server}
           </Typography>
         )}
 
-        <Paper sx={{ p: 3, maxWidth: 500, mx: "auto", mt: 3, boxShadow: 3 }}>
+        <Paper
+          sx={{
+            p: 3,
+            maxWidth: 500,
+            mx: "auto",
+            mt: 3,
+            boxShadow: 3,
+            width: "100%", // Full width for smaller devices
+          }}
+        >
           <form onSubmit={handleSubmit}>
             <TextField
               fullWidth
@@ -124,4 +150,5 @@ const AddDepartment = () => {
     </>
   );
 };
+
 export default AddDepartment;

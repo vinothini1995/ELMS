@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import Layout from '../admin/Layout'
 import { useNavigate } from 'react-router-dom';
-const AllLeaves = () => {
+const DashboardLeave = () => {
   const navigate = useNavigate();
 
   const getStatusChip = (status) => {
@@ -55,21 +55,10 @@ const AllLeaves = () => {
   
   return (
     <>
-      <Layout />
       <Container maxWidth="xl">
-        <Box    sx={{
-          flexGrow: 1,
-          px: 2,
-          py: 3,
-          ml: { sm: "250px" }, // Sidebar space only on larger screens
-        }}>
-          <Typography variant="h5"  sx={{
-            mb: 2,
-            fontWeight: "bold",
-            color: "#3f51b5",
-            textAlign: { xs: "center", sm: "left" },
-          }} >
-            All Leave Requests
+        <Box sx={{ mt: 4, ml: '250px' }}>
+          <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 4, textAlign: 'center' }}>
+            Recent Leave Details
           </Typography>
 
           <TableContainer component={Paper}>
@@ -115,4 +104,4 @@ const AllLeaves = () => {
   )
 }
 
-export default AllLeaves;
+export default DashboardLeave;

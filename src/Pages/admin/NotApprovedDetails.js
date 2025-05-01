@@ -1,5 +1,4 @@
 import React,{useState,useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { useParams } from 'react-router-dom';
 import {
@@ -8,20 +7,13 @@ import {
   Box,
   Grid,
   Paper,
-  Modal,
-  TextField,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
+
   Divider,
-  Button,
 } from '@mui/material';
 import Layout from './Layout';
 import axios from 'axios';
 
-const PendingLeaveDetails = () => {
-    const navigate = useNavigate();
+const NotApprovedDetails = () => {
   
   // Sample data (replace with real data from location.state)
   const { id } = useParams();
@@ -36,33 +28,9 @@ const PendingLeaveDetails = () => {
         console.error("Error fetching leave details:", err);
       }
     };
-if (id) fetchLeaveDetails();
+
+    if (id) fetchLeaveDetails();
   }, [id]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState('');
-  const [adminRemark, setAdminRemark] = useState('');
-  const handleOpenModal = () => setModalOpen(true);
-  const handleCloseModal = () => setModalOpen(false);
-    
-
-  const handleSubmitAction = async () => {
-    try {
-      await axios.put(`http://localhost:5000/api/pendingleaves/leave/update/${id}`, {
-        status: selectedStatus,
-        adminRemark: adminRemark
-      });
-  
-      setModalOpen(false);
-  
-      // Navigate back to pending list after action
-      navigate('/PendingLeaves');
-  
-    } catch (err) {
-      console.error("Error updating leave status:", err);
-    }
-  };
-  
-
   return (
     <>
       <Layout />
@@ -105,49 +73,7 @@ if (id) fetchLeaveDetails();
           {leaveData.description}
         </Typography>
       </Grid>
-      <Button variant='contained' onClick={handleOpenModal}>TAKE ACTION</Button>
 
-<Modal open={modalOpen} onClose={handleCloseModal}>
-  <Box sx={{
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    borderRadius: 2,
-    boxShadow: 24,
-    p: 4,
-  }}>
-    <Typography variant="h6" sx={{ mb: 2 }}>Update Leave Status</Typography>
-
-    <FormControl fullWidth sx={{ mb: 2 }}>
-      <InputLabel>Status</InputLabel>
-      <Select
-        value={selectedStatus}
-        label="Status"
-        onChange={(e) => setSelectedStatus(e.target.value)}
-      >
-        <MenuItem value="Approved">Approved</MenuItem>
-        <MenuItem value="Not Approved">Not Approved</MenuItem>
-      </Select>
-    </FormControl>
-
-    <TextField
-      fullWidth
-      label="Admin Remark"
-      multiline
-      rows={3}
-      value={adminRemark}
-      onChange={(e) => setAdminRemark(e.target.value)}
-      sx={{ mb: 2 }}
-    />
-
-    <Button variant="contained" onClick={handleSubmitAction}>
-      Submit
-    </Button>
-  </Box>
-</Modal>
     </Grid>
   )
 }
@@ -168,4 +94,4 @@ const DetailItem = ({ label, value }) => (
   </Box>
 );
 
-export default PendingLeaveDetails;
+export default NotApprovedDetails;

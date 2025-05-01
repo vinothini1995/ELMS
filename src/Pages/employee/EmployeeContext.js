@@ -17,6 +17,7 @@ export const EmployeeProvider = ({ children }) => {
     description: "",
     name: "" ,// include this
     emp_code: "",
+    id:"",
 
   });
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -51,6 +52,9 @@ export const EmployeeProvider = ({ children }) => {
   useEffect(() => {
     setLeave((prev) => ({ ...prev, emp_code: profile.emp_code }));
   }, [profile.emp_code]);
+  useEffect(() => {
+    setLeave((prev) => ({ ...prev, id: profile.id }));
+  }, [profile.id]);
   return (
     <EmployeeContext.Provider value={{ profile, setProfile, fetchProfile, setToken }}>
       {children}
