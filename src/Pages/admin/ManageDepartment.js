@@ -4,7 +4,6 @@ import {
   Paper, IconButton, Typography, Box, Dialog, DialogTitle, DialogContent,
   DialogActions, Button, TextField, useMediaQuery
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Layout from "./Layout";
@@ -17,8 +16,6 @@ const ManageDepartment = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const fetchDepartments = async () => {
