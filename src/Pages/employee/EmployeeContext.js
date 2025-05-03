@@ -10,7 +10,7 @@ export const EmployeeProvider = ({ children }) => {
     name: "", gender: "", birthDate: "", email: "",
     contact: "", city: "", country: "", address: "",
   });
-  const [leave, setLeave] = useState({
+  const [setLeave] = useState({
     fromDate: "",
     toDate: "",
     leaveType: "",

@@ -12,7 +12,6 @@ import PeopleIcon from '@mui/icons-material/People';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import Layout from "./Layout";
-import AllLeaves from "./AllLeaves";
 import DashboardLeave from "./DashboardLeave";
 const AdminDashboard = () => {
   const [stats, setStats] = useState({

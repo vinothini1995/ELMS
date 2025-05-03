@@ -5,7 +5,6 @@ import {
   TableHead, TableRow, Paper, Container, Chip, 
   Button
 } from "@mui/material";
-import Layout from '../admin/Layout'
 import { useNavigate } from 'react-router-dom';
 const DashboardLeave = () => {
   const navigate = useNavigate();

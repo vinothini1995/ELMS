@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography, Paper, useMediaQuery } from "@mui/material";
+import { Box, TextField, Button, Typography, Paper } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Layout from "./Layout";
 import axios from "axios";
@@ -14,8 +14,7 @@ const AddLeaveType = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const validateForm = () => {
     const newErrors = {};
