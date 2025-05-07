@@ -1,18 +1,18 @@
-import React, { useEffect, useState ,} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { 
+import {
   Box,
   Grid,
   Paper,
-  Typography 
+  Typography
 } from '@mui/material';
 
-// Material-UI icons
 import PeopleIcon from '@mui/icons-material/People';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import Layout from "./Layout";
 import DashboardLeave from "./DashboardLeave";
+
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
     totalEmployees: 0,
@@ -41,8 +41,18 @@ const AdminDashboard = () => {
   return (
     <>
       <Layout />
-      <Box sx={{ flexGrow: 1, p: 3, ml: "250px" }}>
-        <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: { xs: 2, sm: 3, md: 4 },
+          ml: { xs: 0, md: "250px" }
+        }}
+      >
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          sx={{ mb: { xs: 2, sm: 3 } }}
+        >
           Dashboard
         </Typography>
 
@@ -58,11 +68,14 @@ const AdminDashboard = () => {
                   color: "#fff",
                   borderRadius: "10px",
                   boxShadow: 3,
+                  height: "100%",
                 }}
               >
                 <Box sx={{ mr: 2 }}>{stat.icon}</Box>
                 <Box>
-                  <Typography variant="h6" fontWeight="bold">{stat.value}</Typography>
+                  <Typography variant="h6" fontWeight="bold">
+                    {stat.value}
+                  </Typography>
                   <Typography>{stat.title}</Typography>
                 </Box>
               </Paper>
@@ -75,4 +88,5 @@ const AdminDashboard = () => {
     </>
   );
 };
+
 export default AdminDashboard;
